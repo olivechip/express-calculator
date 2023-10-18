@@ -1,7 +1,10 @@
+const fs = require('fs');
+
 let nums = [];
 
 function randNums(num){
     // creates an array with (num) random numbers between 0-9
+    nums = [];
     for (let i = 0; i < num; i++){
         nums.push(Math.floor(Math.random()*10))
     }
@@ -48,8 +51,19 @@ function mode(nums){
             modes.push(Number(entry[0]));
         }
     })
-    console.log(modes)
     return modes;
 }
 
-module.exports = { nums, randNums, mean, median, mode };
+function writeToFile(path, data){
+    // writes data to 'results.json'
+    fs.writeFile(path, data + '\n' + `${new Date().toISOString()}` + '\n', {encoding: 'utf8', flag:'a'}, function(err){
+        if (err){
+            console.log(`Error writing to ${path}: ${err}`)
+            process.exit(1)
+        }
+        console.log(`Successfully wrote data to file!`)
+    })
+}
+
+// comment this line out for regular jasmine test
+module.exports = { nums, randNums, mean, median, mode, writeToFile} ;
